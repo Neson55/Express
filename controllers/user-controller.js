@@ -1,4 +1,4 @@
-const { prisma } = require("../prisma/prisma-client")
+const  { prisma }  = require("../prisma/prisma-client")
 const bcrypt =require('bcryptjs')
 const Jdenticon = require('jdenticon')
 const path  = require('path')

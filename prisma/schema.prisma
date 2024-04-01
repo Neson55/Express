@@ -14,54 +14,54 @@ datasource db {
 }
 
 model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  email String @unique
-  password String 
-  name String?
-  avatarUrl String?
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  email       String    @unique
+  password    String
+  name        String?
+  avatarUrl   String?
   dateOfBirth DateTime?
-  createdAt DataTime @default(now())
-  updateAt DataTime @updateAt
-  bio String?
-  location String?
-  posts Post[]
-  likes Like[]
-  coments Comment[]
-  followers Folows[] @relation("folowing")
-  folowing Folows[] @relation("folower")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  bio         String?
+  location    String?
+  posts       Post[]
+  likes       Like[]
+  comments    Comment[]
+  followers   Follows[] @relation("following")
+  following   Follows[] @relation("follower")
 }
 
-model Folows {
-  id String @id default(auto()) @map("_id") @db.ObjectId
-  folower User @relation("follower", fields:[followerId], references: [id])
-  folowerId String @db.ObjectId
-  folowing User @relation("folowing", fields:[followingId], references: [id])
+model Follows {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  follower    User   @relation("follower", fields: [followerId], references: [id])
+  followerId  String @db.ObjectId
+  following   User   @relation("following", fields: [followingId], references: [id])
   followingId String @db.ObjectId
 }
 
 model Post {
-  id String @id default(auto()) @map("_id") @db.ObjectId
-  content String
-  author User @relation(fields:[authorId], references: [id])
-  authorId String @db.ObjectId
-  likes Like[]
-  comments Comment[]
-  createdAt DateTime @default(now())
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String    @db.ObjectId
+  likes     Like[]
+  comments  Comment[]
+  createdAt DateTime  @default(now())
 }
 
 model Like {
-  id String @id default(auto()) @map("_id") @db.ObjectId
-  user User @relation(fields: [userId], references: [id])
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
   userId String @db.ObjectId
-  post Post @relation(fields: [PostId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id])
   postId String @db.ObjectId
- }
+}
 
- model Comment {
-  id String @id default(auto()) @map("_id") @db.ObjectId
+model Comment {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
   content String
-  user User @relation(fields: [userId], references: [id])
-  userId String @db.ObjectId
-  post Post @relation(fields: [PostId], references: [id])
-  postId String @db.ObjectId
- }
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String @db.ObjectId
+  post    Post   @relation(fields: [postId], references: [id])
+  postId  String @db.ObjectId
+}
