@@ -101,7 +101,7 @@ const UserController = {
 
       res.json({...user, isFollowing: Boolean(isFollowing)})
     }
-    catch{error} {
+    catch(error) {
       console.error('Get Current Error', error)
       res.status(500).json({error: "Internal server error"})
     }
@@ -115,8 +115,8 @@ const UserController = {
     if(req.file&& req.file.path){
       filePath = req.file.path
     }
-    if(!id !== req.user.userId){
-      return res.status(403).json({error: "You don't have permission to update this user"})
+    if(id !== req.user.userId){
+      return res.status(403).json({error: "Нет доступа"})
 
     }
     try {
