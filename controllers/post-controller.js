@@ -33,7 +33,7 @@ const PostController = {
                 include: {
                     likes:true,
                     author:true,
-                    author:true,
+                    comments:true,
                 },
                 orderBy: {
                     createdAt: 'desc'
@@ -92,6 +92,23 @@ const PostController = {
         if(!post) {
             return res.status(404).json({error: "Пост не найден"})
         } 
+
+        if(post.authorId !== req.user.UserId) {
+            return res.status(403).json({error: "Нет доступа"})
+        }
+        //Перед тем как удалить пост нужно удалить всё содержимое поста(коменты, лайки)
+        try{
+            const transaction = await prisma.$transaction([
+                prisma.comment.deleteMany({ where:{postId:id}}),
+                prisma.like.deleteMany({ where:{postId:id}}),
+                prisma.post.delete({ where:{id}})
+            ])
+
+            res.json(transaction)
+        }catch(error) {
+            console.error('Delete post error',error)
+            res.status(500).json({error: 'Internal server error'})
+        }
     },
 }
 
