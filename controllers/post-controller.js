@@ -40,14 +40,14 @@ const PostController = {
                 }
             })
 
-            const postWithLikeInfo = post.map(post => ({
+            const postWithLikeInfo = posts.map(post => ({
                 ...post,
                 likedByUser: post.likes.some(like => like.userId === userId)
             }))
 
             res.json(postWithLikeInfo)
         }catch(error) {
-            console.error ('get all post error')
+            console.error ('get all post error', error)
             res.status(500).json({error: 'Internal server error'})
         }
     },
@@ -56,7 +56,7 @@ const PostController = {
         const userId =req.user.userId
 
         try {
-            const post = prisma.post.findUnique({
+            const post =  await prisma.post.findUnique({
                 where: {id},
                 include: {
                     comments: {
@@ -93,7 +93,7 @@ const PostController = {
             return res.status(404).json({error: "Пост не найден"})
         } 
 
-        if(post.authorId !== req.user.UserId) {
+        if(post.authorId !== req.user.userId) {
             return res.status(403).json({error: "Нет доступа"})
         }
         //Перед тем как удалить пост нужно удалить всё содержимое поста(коменты, лайки)
