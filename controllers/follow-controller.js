@@ -43,7 +43,7 @@ unfollowUser: async (req, res)=> {
         where: {
             AND: [
                 {followerId:userId},
-                {followingId}
+                {followingId: followingId}
             ]
         }
     })
@@ -52,9 +52,7 @@ unfollowUser: async (req, res)=> {
     }
     
     await prisma.follows.delete({
-        where: {
-            id: follows.id
-        }
+        where: {id: follows.id}
     })
 
     res.status(201).json({message:'Вы отписались'})

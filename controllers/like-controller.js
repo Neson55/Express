@@ -3,14 +3,15 @@ const {prisma} =require("../prisma/prisma-client");
 const LikeController = {
 
     likePost: async (req, res) => {
-        const {postId} = req.body
+        const {postId} = req.body   
         const userId = req.user.userId
 
         if(!postId){
             return res.status(400).json({error: "Все поля обязательны"})
         }
+        
         try {
-            const existingLike = await prisma.like.findUnique({
+            const existingLike = await prisma.like.findFirst({
                 where: {postId, userId}
             })
 
@@ -45,7 +46,7 @@ const LikeController = {
             return res.status(400).json({error: "Нельзя поставить дизлайк"})
         }
         const like = await prisma.like.deleteMany({
-            where: {postId:id , id, userId}
+            where: {postId:id, userId}
         })
         res.json(like)
 
