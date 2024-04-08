@@ -30,11 +30,11 @@ router.get('/posts/:id',authenticateToken, PostController.getPostById)
 router.delete('/posts/:id',authenticateToken, PostController.deletePost)
 
 //Роуты коментариев
-router.post ('/comments',authenticateToken, CommentController.createComment)
+router.post('/comments',authenticateToken, CommentController.createComment)
 router.delete('/comments/:id',authenticateToken, CommentController.deleteComment)
 
 //Роуты лайков
-router.post ('/likes',authenticateToken, LikeController.likePost)
+router.post('/likes',authenticateToken, LikeController.likePost)
 router.delete('/likes/:id',authenticateToken, LikeController.unLikePost)
 
 //Роуты подписок
